@@ -7,7 +7,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { schema } from "./schema";
 import { DatePicker } from "@mui/x-date-pickers";
-import { Button, Stack, TextField } from "@mui/material";
+import { Box, Button, Stack, TextField, css } from "@mui/material";
 import dayjs from "dayjs";
 
 interface TransationProp {
@@ -63,7 +63,7 @@ export default function Home() {
 
   return (
     <div>
-      <h1>Gestão de dados financeiros</h1>
+      <h1 style={css({  textAlign: "center" })}>Gestão de dados financeiros</h1>
 
       <ul>
         {transactions.map((transaction) => (
@@ -75,32 +75,46 @@ export default function Home() {
       </ul>
 
       <FormProvider {...form}>
-        <Stack gap={3}>
+        <Stack justifyContent="center" alignItems="center"  gap= "20px" 
+        sx={{          
+          backgroundColor: "Gainsboro",        
+          border: 2.5,
+          borderColor: "DarkGrey",
+          padding: "10px",
+          borderRadius: "10px",
+          width: "250px",
+          }} >
           <>
+          Data
             <DatePicker
               sx={{
-                borderColor: "gray",
-                height: 50,
+                border: 2.5,
+                borderColor: "DarkGrey",
+                height: 55,
                 width: 250,
-                borderRadius: "15px",
+                backgroundColor: "white",
+                borderRadius: 2 ,
               }}
               format="DD/MM/YYYY"
               slotProps={{
                 textField: {
                   helperText: errors.date?.message,
                   error: !!errors.date,
-                  placeholder: "Data",
+                  placeholder: "DD/MM/AAAA",
               }}}
               value={watch("date")??""}
               onChange={(value)=>setValue("date",value)}
             />
             <>
+            Descrição 
               <TextField
                 sx={{
-                  borderColor: "gray",
-                  height: 50,
+                  border: 2.5,
+                  borderColor: "DarkGrey",
+                  height: 55,
                   width: 250,
-                  borderRadius: "15px",
+                  borderRadius: 2 ,
+                  backgroundColor: "white",
                 }}
                 placeholder="Descrição da transação"
                 helperText={errors.description?.message}
@@ -109,37 +123,53 @@ export default function Home() {
               />
             </>
             <>
+            Entrada
               <TextField
                 sx={{
-                  borderColor: "gray",
-                  height: 50,
+                  border: 2.5,
+                  borderColor: "DarkGrey",
+                  height: 55,
                   width: 250,
-                  borderRadius: "15px",
+                  borderRadius: 2 ,
+                  backgroundColor: "white",
                 }}
-                placeholder="Entrada"
+                placeholder="0"
                 helperText={errors.value_in?.message}
                 error={!!errors.value_in}
                 {...register("value_in")}
               />
             </>
             <>
+            Saída
               <TextField
                 sx={{
-                  borderColor: "gray",
-                  height: 50,
+                  border: 2.5,
+                  borderColor: "DarkGrey",
+                  height: 55,
                   width: 250,
-                  borderRadius: "15px",
+                  borderRadius: 2 ,
+                  backgroundColor: "white",
                 }}
-                placeholder="Saída"
+                placeholder="0"
                 helperText={errors.value_out?.message}
                 error={!!errors.value_out}
                 {...register("value_out")}
               />
             </>
-          </>
+            </>
           <Button
             onClick={handleSubmit(onSubmit)}
-            style={{ width: "250px", borderRadius: "15px" }}
+            sx={{
+              border: 2.5,
+              borderColor: "MediumSeaGreen",
+              width: "250px",
+              backgroundColor: "#00ff00",
+              color: "#292929",
+              '&:hover':{
+                backgroundColor: "#007a00",
+                borderColor: "#004a00"
+              }
+            }}
           >
             Salvar
           </Button>
