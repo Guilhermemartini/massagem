@@ -161,17 +161,17 @@ export default function Home() {
             onClick={handleSubmit(onSubmit)}
             sx={{
               border: 2.5,
-              borderColor: "MediumSeaGreen",
+              borderColor: "#009400",
               width: "250px",
               backgroundColor: "#00ff00",
               color: "#292929",
               '&:hover':{
-                backgroundColor: "#007a00",
-                borderColor: "#004a00"
+                backgroundColor: "##00ba00",
+                borderColor: "#007a00"
               }
             }}
           >
-            Salvar
+            SALVAR
           </Button>
         </Stack>
       </FormProvider>
