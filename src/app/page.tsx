@@ -55,6 +55,7 @@ export default function Home() {
     reset();
 
     await localStorage.setItem("transactions", JSON.stringify(newTransactions));
+    window.location.reload();
   };
 
   return (
@@ -110,7 +111,7 @@ export default function Home() {
               }}
               variant="filled"
               label="Descrição"
-              placeholder="Descrição da transação"
+              placeholder="Adicione uma descrição"
               helperText={errors.description?.message}
               error={!!errors.description}
               {...register("description")}

@@ -1,6 +1,6 @@
 import { DataGrid } from "@mui/x-data-grid";
 import { TransactionProps } from "../type";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import dayjs from "dayjs";
 import {
   Button,
@@ -30,6 +30,16 @@ export const Table: FC<Props> = ({ values }) => {
   ];
 
   const [monthActual, setMonthActual] = useState(0);
+  const [localStorageValues, setLocalStorageValues] = useState([]);
+  const [update, setUpdate] = useState(false);
+
+  useEffect(() => {
+    const localStorageData = localStorage.getItem("transactions");
+    if (localStorageData) {
+      setLocalStorageValues(JSON.parse(localStorageData));
+      setUpdate(false);
+    }
+  }, [update]);
 
   return (
     <Stack alignItems="center" width="100%" gap={1}>
@@ -45,13 +55,11 @@ export const Table: FC<Props> = ({ values }) => {
         ))}
       </ToggleButtonGroup>
 
+      <Button sx={{}}></Button>
+
       <DataGrid
-        style={{ height: 400, width: "100%" }}
-        rows={
-          values?.filter(
-            (value) => dayjs(value.date)?.month() === monthActual
-          ) ?? []
-        }
+        sx={{ height: 400, width: "100%" }}
+        rows={localStorageValues ?? []}
         columns={[
           {
             headerName: "Descrição",
