@@ -13,7 +13,7 @@ import {
 interface Props {
   values: TransactionProps[];
 }
-export const Table: FC<Props> = ({ values }) => {
+export const Table: FC<Props> = ({values}) => {
   const months = [
     "Janeiro",
     "Fevereiro",
@@ -27,26 +27,17 @@ export const Table: FC<Props> = ({ values }) => {
     "Outubro",
     "Novembro",
     "Dezembro",
+    "TODOS",
   ];
 
-  const [monthActual, setMonthActual] = useState(0);
-  const [localStorageValues, setLocalStorageValues] = useState([]);
-  const [update, setUpdate] = useState(false);
-
-  useEffect(() => {
-    const localStorageData = localStorage.getItem("transactions");
-    if (localStorageData) {
-      setLocalStorageValues(JSON.parse(localStorageData));
-      setUpdate(false);
-    }
-  }, [update]);
+  const [monthActual, setMonthActual] = useState(0);  
 
   return (
     <Stack alignItems="center" width="100%" gap={1}>
       <ToggleButtonGroup
         value={monthActual}
         exclusive
-        onChange={(newValue) => setMonthActual(newValue)}
+        onChange={(_,newValue) => setMonthActual(newValue)}
       >
         {months.map((month, index) => (
           <ToggleButton value={index} key={index}>
@@ -58,8 +49,16 @@ export const Table: FC<Props> = ({ values }) => {
       <Button sx={{}}></Button>
 
       <DataGrid
-        sx={{ height: 400, width: "100%" }}
-        rows={localStorageValues ?? []}
+      initialState={{
+        pagination:{paginationModel: {pageSize:25}}
+      }}
+        sx={{ height: 400, width: "60%" }}
+        rows={values?.filter((value)=>{
+          if(
+            monthActual===12
+          )return true
+          else 
+        return dayjs(value.date).month()===monthActual}) ?? []}
         columns={[
           {
             headerName: "Descrição",

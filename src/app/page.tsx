@@ -25,8 +25,8 @@ export default function Home() {
     defaultValues: {
       description: "",
       date: dayjs(),
-      value_in: 0,
-      value_out: 0,
+      value_in:"",
+      value_out:""
     },
     resolver: yupResolver(schema),
   });
@@ -54,8 +54,7 @@ export default function Home() {
     setTransactions(newTransactions);
     reset();
 
-    await localStorage.setItem("transactions", JSON.stringify(newTransactions));
-    window.location.reload();
+    localStorage.setItem("transactions", JSON.stringify(newTransactions));
   };
 
   return (
@@ -128,6 +127,7 @@ export default function Home() {
               variant="filled"
               label="Entrada"
               InputProps={{ inputProps: { min: 0, inputMode: "numeric" } }}
+              type="number"
               placeholder="0"
               helperText={errors.value_in?.message}
               error={!!errors.value_in}
@@ -146,6 +146,7 @@ export default function Home() {
               variant="filled"
               label="Saída"
               inputProps={{ min: 0, inputMode: "numeric" }}
+              type="number"
               placeholder="0"
               helperText={errors.value_out?.message}
               error={!!errors.value_out}
@@ -160,7 +161,7 @@ export default function Home() {
                 backgroundColor: "#00ff00",
                 color: "#292929",
                 "&:hover": {
-                  backgroundColor: "##00ba00",
+                  backgroundColor: "#00ba00",
                   borderColor: "#007a00",
                 },
               }}
@@ -171,7 +172,7 @@ export default function Home() {
         </FormProvider>
       </Stack>
 
-      <Table values={transactions} />
+      <Table values={transactions } />
     </Stack>
   );
 }
