@@ -156,13 +156,13 @@ export default function Home() {
               onClick={handleSubmit(onSubmit)}
               sx={{
                 border: 2.5,
-                borderColor: "#009400",
+                borderColor: "#0e0cff",
                 width: "250px",
-                backgroundColor: "#00ff00",
-                color: "#292929",
+                backgroundColor: "#2f41ff",
+                color: "black",
                 "&:hover": {
-                  backgroundColor: "#00ba00",
-                  borderColor: "#007a00",
+                  backgroundColor: "#0606cd",
+                  borderColor: "#10149f",
                 },
               }}
             >

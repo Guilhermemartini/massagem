@@ -8,6 +8,7 @@ import {
   Stack,
   ToggleButton,
   ToggleButtonGroup,
+  Typography,
 } from "@mui/material";
 
 interface Props {
@@ -52,6 +53,7 @@ export const Table: FC<Props> = ({values}) => {
       initialState={{
         pagination:{paginationModel: {pageSize:25}}
       }}
+      slots={{noRowsOverlay:()=><Typography minHeight={30} variant='body1'> NENHUM DADO CADASTRADO</Typography>}}
         sx={{ height: 400, width: "60%" }}
         rows={values?.filter((value)=>{
           if(
