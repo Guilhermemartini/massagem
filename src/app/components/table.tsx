@@ -1,5 +1,5 @@
-import { DataGrid } from "@mui/x-data-grid";
-import { TransactionProps } from "../type";
+import { DataGrid, GridOverlay } from "@mui/x-data-grid";
+import { TransactionProps } from "../../type";
 import { FC, useEffect, useState } from "react";
 import dayjs from "dayjs";
 import {
@@ -13,8 +13,9 @@ import {
 
 interface Props {
   values: TransactionProps[];
+  loading: boolean;
 }
-export const Table: FC<Props> = ({values}) => {
+export const Table: FC<Props> = ({ values, loading }) => {
   const months = [
     "Janeiro",
     "Fevereiro",
@@ -31,14 +32,14 @@ export const Table: FC<Props> = ({values}) => {
     "TODOS",
   ];
 
-  const [monthActual, setMonthActual] = useState(0);  
+  const [monthActual, setMonthActual] = useState(12);
 
   return (
     <Stack alignItems="center" width="100%" gap={1}>
       <ToggleButtonGroup
         value={monthActual}
         exclusive
-        onChange={(_,newValue) => setMonthActual(newValue)}
+        onChange={(_, newValue) => setMonthActual(newValue)}
       >
         {months.map((month, index) => (
           <ToggleButton value={index} key={index}>
@@ -50,17 +51,23 @@ export const Table: FC<Props> = ({values}) => {
       <Button sx={{}}></Button>
 
       <DataGrid
-      initialState={{
-        pagination:{paginationModel: {pageSize:25}}
-      }}
-      slots={{noRowsOverlay:()=><Typography minHeight={30} variant='body1'> NENHUM DADO CADASTRADO</Typography>}}
-        sx={{ height: 400, width: "60%" }}
-        rows={values?.filter((value)=>{
-          if(
-            monthActual===12
-          )return true
-          else 
-        return dayjs(value.date).month()===monthActual}) ?? []}
+        initialState={{
+          pagination: { paginationModel: { pageSize: 25 } },
+        }}
+        loading={loading}
+        localeText={{ noRowsLabel: "Não há registros" }}
+        sx={{
+          width: "60%",
+          ".MuiDataGrid-overlay": {
+            height: "auto !important",
+          },
+        }}
+        rows={
+          values?.filter((value) => {
+            if (monthActual === 12) return true;
+            else return dayjs(value.date).month() === monthActual;
+          }) ?? []
+        }
         columns={[
           {
             headerName: "Descrição",

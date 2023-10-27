@@ -9,24 +9,34 @@ import { schema } from "./schema";
 import { DatePicker } from "@mui/x-date-pickers";
 import { Box, Button, Stack, TextField, css } from "@mui/material";
 import dayjs from "dayjs";
-import { TransactionProps } from "./type";
+import { TransactionProps } from "../type";
 import { Table } from "./components/table";
+import axios from "axios";
+import { http } from "@/utils";
 
 export default function Home() {
   const [transactions, setTransactions] = useState<TransactionProps[]>([]);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
-    const transactions = localStorage.getItem("transactions");
-    if (transactions) {
-      setTransactions(JSON.parse(transactions));
-    }
+    handleSearch();
   }, []);
-  useEffect(() => console.debug(transactions), [transactions]);
+
+  const handleSearch = async () => {
+    setLoading(true);
+    try {
+      const { data } = await http.get("/");
+      setTransactions(data?.data);
+    } catch (e) {
+      setTransactions([]);
+    }
+    setLoading(false);
+  };
   const form = useForm({
     defaultValues: {
       description: "",
       date: dayjs(),
-      value_in:"",
-      value_out:""
+      value_in: "",
+      value_out: "",
     },
     resolver: yupResolver(schema),
   });
@@ -48,13 +58,12 @@ export default function Home() {
       date: transaction.date,
       value_in: transaction.value_in,
       value_out: transaction.value_out,
-      id: crypto.randomUUID(),
     };
-    const newTransactions = transactions.concat([newTransaction]);
-    setTransactions(newTransactions);
-    reset();
-
-    localStorage.setItem("transactions", JSON.stringify(newTransactions));
+    try {
+      await http.post("/", newTransaction);
+      handleSearch();
+      reset();
+    } catch (e) {}
   };
 
   return (
@@ -156,13 +165,13 @@ export default function Home() {
               onClick={handleSubmit(onSubmit)}
               sx={{
                 border: 2.5,
-                borderColor: "#0e0cff",
+                borderColor: "#0eab53",
                 width: "250px",
-                backgroundColor: "#2f41ff",
-                color: "black",
+                backgroundColor: "#19ce68",
+                color: "#effef5",
                 "&:hover": {
-                  backgroundColor: "#0606cd",
-                  borderColor: "#10149f",
+                  backgroundColor: "#80f5b2",
+                  borderColor: "#19ce68",
                 },
               }}
             >
@@ -172,7 +181,7 @@ export default function Home() {
         </FormProvider>
       </Stack>
 
-      <Table values={transactions } />
+      <Table values={transactions} loading={loading} />
     </Stack>
   );
 }
